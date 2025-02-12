@@ -24,8 +24,8 @@ from .views import index, download_file, subscribe_newsletter, unsubscribe, favi
 
 
 urlpatterns = [
-    path('portfolioadmin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
-    path('admin/', admin.site.urls),
+    path('horenadmin/', include('admin_honeypot.urls', namespace='admin_honeypot')),
+    path('portfolioadmin/', admin.site.urls),
     path('app/', include('app.urls')),
     path('', views.index, name="index"),
     
