@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    'admin_honeypot',
     'cloudinary_storage',
     'cloudinary',
 ]
