@@ -96,6 +96,16 @@ WSGI_APPLICATION = 'myportfolio.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': config('DATABASE_NAME'), 
+        'USER': config('USER'),  
+        'PASSWORD': config('PASSWORD'),  
+        'HOST': config('HOST'),  
+        'PORT': config('PORT', "8000"),  
+    }
+}
 
 
 # Password validation
@@ -122,7 +132,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Africa/Lagos' 
 
 USE_I18N = True
 
@@ -134,21 +144,47 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),  # Ensure you have a 'static' folder inside your project root
-]
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
+
+
+
+
+
+STATIC_URL = '/static/'
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where static files will be collected
+STATIC_ROOT=BASE_DIR /'static'
+
+# Only include STATICFILES_DIRS in development
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+STATICFILES_DIRS=[
+    'myportfolio/static',
+]
+# Use Whitenoise for static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# --------- MEDIA FILES ---------
+if DEBUG:
+    # In development, serve media files locally
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    # In production, use Cloudinary for media storage
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('CLOUDINARY_API_KEY'),
+    'API_SECRET': config('CLOUDINARY_API_SECRET'),
+}
+
+
+
+
+
+
+
 
 
 from django.contrib.messages import constants as messages
@@ -166,40 +202,39 @@ EMAIL_HOST_USER     = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')    
 EMAIL_USE_TLS       = config('EMAIL_USE_TLS', cast=bool)
 
+# if not DEBUG:
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# # CLOUDINARY SETUP FOR MEDIA
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# CLOUDINARY_STORAGE = {
+#     'CLOUD_NAME': config('CLOUD_NAME'),
+#     'API_KEY': config('API_KEY'),
+#     'API_SECRET': config('API_SECRET'),
+# }
+
+# STORAGES = {
+#     'staticfiles': {
+#         'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+#         }
+# }
+
+
+# --------- DEPLOYMENT SETTINGS ---------
 if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = "DENY"
+    SECURE_SSL_REDIRECT = True  # Force HTTPS
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DATABASE_NAME'), 
-        'USER': config('USER'),  
-        'PASSWORD': config('PASSWORD'),  
-        'HOST': config('HOST'),  
-        'PORT': config('PORT', "8000"),  
-    }
-}
-
-
-
-
-# CLOUDINARY SETUP FOR MEDIA
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUD_NAME'),
-    'API_KEY': config('API_KEY'),
-    'API_SECRET': config('API_SECRET'),
-}
-
-STORAGES = {
-    'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-        }
-}
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
