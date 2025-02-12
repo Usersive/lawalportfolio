@@ -157,9 +157,6 @@ MESSAGE_TAGS ={
 }
 
 
-# if not DEBUG:
-#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 EMAIL_BACKEND       = config('EMAIL_BACKEND')   
@@ -169,6 +166,11 @@ EMAIL_HOST_USER     = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')    
 EMAIL_USE_TLS       = config('EMAIL_USE_TLS', cast=bool)
 
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 
 DATABASES = {
@@ -178,7 +180,7 @@ DATABASES = {
         'USER': config('USER'),  
         'PASSWORD': config('PASSWORD'),  
         'HOST': config('HOST'),  
-        'PORT': config('PORT'),  
+        'PORT': config('PORT', "8000"),  
     }
 }
 
