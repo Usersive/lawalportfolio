@@ -37,7 +37,7 @@ SECRET_KEY =('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'True')=="True"
 
 
-ALLOWED_HOSTS = ['lawalportfolio.onrender.com']
+ALLOWED_HOSTS = ['127.0.0.1','lawalportfolio.onrender.com']
 
 
 # Application definition
@@ -157,8 +157,20 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 # --------- STATIC FILES ---------
+
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where static files will be collected
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# If you have additional static files, include them here
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+
+
+
+# Directory where static files will be collected
 # Use Whitenoise for static files in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
