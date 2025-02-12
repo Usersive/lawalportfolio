@@ -157,26 +157,18 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 # --------- STATIC FILES ---------
-
-
 STATIC_URL = '/static/'
+STATIC_ROOT=BASE_DIR /'static'
+# STATICFILES_DIRS=[
+#     'myportfolio/static',
+# ]
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-# If you have additional static files, include them here
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'static'),
-]
-
-
-
-
-# Directory where static files will be collected
 # Use Whitenoise for static files in production
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # Only include STATICFILES_DIRS in development
-if DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# if DEBUG:
+#     STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 
 
