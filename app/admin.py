@@ -49,8 +49,6 @@ class TestimonialAdmin(admin.ModelAdmin):
 class SkillAdmin(admin.ModelAdmin):
     list_display =[ 'skill_heading','skill_percent',]
     list_display_links=('skill_heading','skill_percent',)
-    def has_add_permission(self, request):
-        return not Skill.objects.exists() 
     
 class ServiceAdmin(admin.ModelAdmin):
     list_display =[ 'service_title','service_details',]
