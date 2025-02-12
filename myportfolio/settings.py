@@ -37,7 +37,7 @@ SECRET_KEY =('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'True')=="True"
 
 
-ALLOWED_HOSTS = ['127.0.0.1', 'lawalportfolio.onrender.com']
+ALLOWED_HOSTS = ['lawalportfolio.onrender.com']
 
 
 # Application definition
