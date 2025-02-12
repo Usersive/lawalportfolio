@@ -147,7 +147,25 @@ USE_TZ = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
+# --------- STATIC FILES ---------
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where static files will be collected
 
+# Only include STATICFILES_DIRS in development
+if DEBUG:
+    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+
+# Use Whitenoise for static files in production
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# --------- MEDIA FILES ---------
+if DEBUG:
+    # In development, serve media files locally
+    MEDIA_URL = '/media/'
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+else:
+    # In production, use Cloudinary for media storage
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 
@@ -158,19 +176,7 @@ MESSAGE_TAGS ={
 }
 
 
-STATIC_URL = '/static/'
-STATIC_ROOT=BASE_DIR /'static'
-
-
-if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
-
 #CLOUDINARY SETUP 
-
 CLOUDINARY_URL = config('CLOUDINARY_URL') 
 
 CLOUDINARY_STORAGE = {
@@ -180,20 +186,7 @@ CLOUDINARY_STORAGE = {
 }
 
 # CLOUDINARY SETUP FOR MEDIA
-
 DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
-
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR /'media'
-
-
-
-STORAGES = {
-    'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-        }
-}
 
 
 EMAIL_BACKEND       = config('EMAIL_BACKEND')   
@@ -204,7 +197,13 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS       = config('EMAIL_USE_TLS', cast=bool)
 
 
-
+if not DEBUG:
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    X_FRAME_OPTIONS = "DENY"
+    SECURE_SSL_REDIRECT = True  # Force HTTPS
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
