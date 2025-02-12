@@ -64,7 +64,7 @@
                         </div>
                         
                         {%include 'includes/alerts.html'%}
-                        
+
                         <div class="d-flex align-items-end justify-content-between border-top">
                             {% if file %}
                                 <a href="{% url 'download_file' file.id %}"class="btn w-50 border-end">{{file.name}}</a>
@@ -413,5 +413,6 @@ class="whatsapp"><i class="faa fa fa-whatsapp"></i></a>
                 });
             });
         </script>
+       
     </body>
 </html>

@@ -23,7 +23,7 @@ class Profile(models.Model):
         ('Not Available', 'Not Available')
     )
     full_name = models.CharField(max_length=250)
-    profile_image = models.ImageField(upload_to='profile')
+    profile_image = models.ImageField(upload_to='profile/')
     profes= models.CharField(max_length=100)
     experience = models.CharField(max_length=10)
     phone = models.CharField(max_length=15)
@@ -84,7 +84,7 @@ class Testimonial(models.Model):
     test_details = models.TextField()
     test_client_name = models.CharField(max_length=50)
     test_client_profess = models.CharField(max_length=50)
-    image = models.ImageField(upload_to='testimoniels')
+    image = models.ImageField(upload_to='testimoniels/')
     
     def __str__(self):
         return self.test_client_name
@@ -105,7 +105,7 @@ class Content(models.Model):
     )
     details = models.CharField(max_length=250)
     section = models.CharField(max_length=50, choices=SELECTION_CHOICE)
-    image = models.ImageField(upload_to='images')
+    image = models.ImageField(upload_to='images/')
     
     def __str__(self):
         return self.section

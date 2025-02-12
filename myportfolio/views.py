@@ -206,7 +206,7 @@ def unsubscribe(request, token):
 
 def favicon_view(request):
     """Manually serve favicon.ico"""
-    favicon_path = os.path.join(settings.BASE_DIR, 'static/logo/favicon.ico')
+    favicon_path = os.path.join(settings.BASE_DIR, 'static/img/favicon.ico')
     if os.path.exists(favicon_path):
         return FileResponse(open(favicon_path, "rb"), content_type = "image/x-icon")
     return HttpResponse(status=404)
