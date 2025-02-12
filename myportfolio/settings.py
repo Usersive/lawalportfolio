@@ -151,28 +151,6 @@ USE_TZ = True
 
 
 
-STATIC_URL = '/static/'
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where static files will be collected
-STATIC_ROOT=BASE_DIR /'static'
-
-# Only include STATICFILES_DIRS in development
-if DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-STATICFILES_DIRS=[
-    'myportfolio/static',
-]
-# Use Whitenoise for static files in production
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# --------- MEDIA FILES ---------
-if DEBUG:
-    # In development, serve media files locally
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-else:
-    # In production, use Cloudinary for media storage
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
 
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS ={
@@ -180,12 +158,9 @@ MESSAGE_TAGS ={
 }
 
 
-EMAIL_BACKEND       = config('EMAIL_BACKEND')   
-EMAIL_HOST          = config('EMAIL_HOST')  
-EMAIL_PORT          = config('EMAIL_PORT', cast=int) 
-EMAIL_HOST_USER     = config('EMAIL_HOST_USER')    
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')    
-EMAIL_USE_TLS       = config('EMAIL_USE_TLS', cast=bool)
+STATIC_URL = '/static/'
+STATIC_ROOT=BASE_DIR /'static'
+
 
 if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -194,7 +169,7 @@ if not DEBUG:
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+#CLOUDINARY SETUP 
 
 CLOUDINARY_URL = config('CLOUDINARY_URL') 
 
@@ -205,10 +180,12 @@ CLOUDINARY_STORAGE = {
 }
 
 # CLOUDINARY SETUP FOR MEDIA
+
 DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
-# #Load barcode user image from cloudinary
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = '/myportfolio/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
 
 
 STORAGES = {
@@ -218,14 +195,14 @@ STORAGES = {
 }
 
 
-# --------- DEPLOYMENT SETTINGS ---------
-if not DEBUG:
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = "DENY"
-    SECURE_SSL_REDIRECT = True  # Force HTTPS
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+EMAIL_BACKEND       = config('EMAIL_BACKEND')   
+EMAIL_HOST          = config('EMAIL_HOST')  
+EMAIL_PORT          = config('EMAIL_PORT', cast=int) 
+EMAIL_HOST_USER     = config('EMAIL_HOST_USER')    
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')    
+EMAIL_USE_TLS       = config('EMAIL_USE_TLS', cast=bool)
+
+
 
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
