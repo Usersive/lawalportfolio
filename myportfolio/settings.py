@@ -37,7 +37,7 @@ SECRET_KEY =('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'True')=="True"
 
 
-ALLOWED_HOSTS = ['127.0.0.1','lawalportfolio.onrender.com']
+ALLOWED_HOSTS = ['lawalportfolio.onrender.com']
 
 
 # Application definition
@@ -160,10 +160,10 @@ USE_TZ = True
 DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
 STATIC_URL = '/static/'
-STATIC_ROOT=BASE_DIR /'static'
-# STATICFILES_DIRS=[
-#     'expenseswebsite/static',
-# ]
+STATIC_ROOT=BASE_DIR /'staticfiles'
+STATICFILES_DIRS=[
+    'myportfolio/static',
+]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media'
@@ -188,10 +188,10 @@ if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # CLOUDINARY SETUP FOR MEDIA
-# DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
+DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
 # #Load barcode user image from cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
