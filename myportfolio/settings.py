@@ -159,29 +159,27 @@ USE_TZ = True
 # --------- STATIC FILES ---------
 DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
+# STATIC_URL = '/static/'
+# STATIC_ROOT=BASE_DIR /'staticfiles'
+
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')  # Directory where static files will be collected
+STATIC_ROOT=BASE_DIR /'static'
 
-# Only include STATICFILES_DIRS in development
-if DEBUG:
-    STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
-
-# Use Whitenoise for static files in production
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_DIRS=[
+#     os.path.join(BASE_DIR, "static")
+#     # 'myportfolio/static',
+# ]
 
 
-if DEBUG:
-    # In development, serve media files locally
-    MEDIA_URL = '/media/'
-    MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-else:
-    # In production, use Cloudinary for media storage
-    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR /'media'
 
 
+if not DEBUG:
+    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS ={
