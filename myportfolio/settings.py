@@ -71,7 +71,7 @@ ROOT_URLCONF = 'myportfolio.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join('templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -164,8 +164,8 @@ STATICFILES_DIRS = [
     # Ensure you have a 'static' folder inside your project root
 ]
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
@@ -188,6 +188,7 @@ STORAGES = {
 
 #CLOUDINARY SETUP 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 
 CLOUDINARY_STORAGE = {
