@@ -160,10 +160,10 @@ USE_TZ = True
 DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
 STATIC_URL = '/static/'
-STATIC_ROOT=BASE_DIR /'staticfiles'
-STATICFILES_DIRS=[
-    'myportfolio/static',
-]
+STATIC_ROOT=BASE_DIR /'static'
+# STATICFILES_DIRS=[
+#     'myportfolio/static',
+# ]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media'
