@@ -161,19 +161,18 @@ DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
 STATIC_URL = '/static/'
 STATIC_ROOT=BASE_DIR /'staticfiles'
-# STATICFILES_DIRS=[
-#     'myportfolio/static',
-# ]
+
+STATICFILES_DIRS=[
+    os.path.join(BASE_DIR, "static")
+#     'myportfolio/static'
+]
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR /'media'
 
 
-STORAGES = {
-    'staticfiles': {
-        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
-        }
-}
+
 
 
 
@@ -205,7 +204,7 @@ if not DEBUG:
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 EMAIL_BACKEND       = config('EMAIL_BACKEND')   
 EMAIL_HOST          = config('EMAIL_HOST')  
