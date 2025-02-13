@@ -184,18 +184,19 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': config('API_SECRET'),
 }
 
-if not DEBUG:
-    STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# if not DEBUG:
+#     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+#     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
 # CLOUDINARY SETUP FOR MEDIA
-DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
+# DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
 # #Load barcode user image from cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage'
 
 EMAIL_BACKEND       = config('EMAIL_BACKEND')   
 EMAIL_HOST          = config('EMAIL_HOST')  
@@ -205,16 +206,15 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_USE_TLS       = config('EMAIL_USE_TLS', cast=bool)
 
 
-if not DEBUG:
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    X_FRAME_OPTIONS = "DENY"
-    SECURE_SSL_REDIRECT = True  # Force HTTPS
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # Security settings for production
+SECURE_SSL_REDIRECT = True  # Redirects all HTTP requests to HTTPS
+SESSION_COOKIE_SECURE = True  # Ensures session cookies are only sent over HTTPS
+CSRF_COOKIE_SECURE = True  # Ensures CSRF cookie is only sent over HTTPS
+X_FRAME_OPTIONS = 'DENY'  # Prevents your site from being loaded in an iframe (Clickjacking protection)
+SECURE_HSTS_SECONDS = 31536000  # Enforces HTTPS for 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
