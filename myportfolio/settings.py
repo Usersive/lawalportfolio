@@ -153,26 +153,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
-
-# --------- STATIC FILES ---------
-DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
-
-# STATIC_URL = '/static/'
-# STATIC_ROOT=BASE_DIR /'staticfiles'
-
 STATIC_URL = '/static/'
 STATIC_ROOT=BASE_DIR /'static'
-
-# STATICFILES_DIRS=[
-#     os.path.join(BASE_DIR, "static")
-#     # 'myportfolio/static',
-# ]
-
-
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR /'media'
 
 
 if not DEBUG:
@@ -181,10 +163,25 @@ if not DEBUG:
 
 STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
+
+
 from django.contrib.messages import constants as messages
 MESSAGE_TAGS ={
     messages.ERROR: 'danger',
 }
+
+DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
+MEDIA_URL = '/myportfolio/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
+
+STORAGES = {
+    'staticfiles': {
+        'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage',
+        }
+}
+
 
 
 #CLOUDINARY SETUP 
@@ -197,10 +194,10 @@ CLOUDINARY_STORAGE = {
 }
 
 # CLOUDINARY SETUP FOR MEDIA
-DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
+# DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
-# #Load barcode user image from cloudinary
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+# # #Load barcode user image from cloudinary
+# DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 EMAIL_BACKEND       = config('EMAIL_BACKEND')   
