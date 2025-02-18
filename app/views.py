@@ -23,7 +23,7 @@ import cloudinary
 
 #     except File.DoesNotExist:
 #         raise Http404("File not found")
-def download_pdf(request, file_id):
+def download_file(request, file_id):
     # Retrieve file instance
     file_instance = get_object_or_404(File, id=file_id)
 

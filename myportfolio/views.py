@@ -114,7 +114,7 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def download_pdf(request, file_id):
+def download_file(request, file_id):
     # Retrieve file instance
     file_instance = get_object_or_404(File, id=file_id)
 
