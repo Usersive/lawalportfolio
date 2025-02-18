@@ -141,50 +141,6 @@ def download_file(request, file_id):
 
 
 
-# def subscribe_newsletter(request):
-#     if request.method == "POST":
-#         form = SubscriptionForm(request.POST)
-#         if form.is_valid():
-#             email = form.cleaned_data['email']
-
-#             # Check if the email is in UnsubscribedUser
-#             if UnsubscribedUser.objects.filter(email=email).exists():
-#                 messages.error(request, "You have previously unsubscribed. Contact support to resubscribe.")
-#             else:
-#                 subscriber, created = Subscriber.objects.get_or_create(email=email)
-
-#                 if not created:
-#                     messages.warning(request, "You're already subscribed!")
-#                 else:
-#                     messages.success(request, "Subscription successful! A confirmation email has been sent.")
-
-#                     # Generate unsubscribe link
-#                     unsubscribe_url = request.build_absolute_uri(
-#                         reverse('unsubscribe', args=[subscriber.unsubscribe_token])
-#                     )
-
-#                     # Render email template
-#                     html_content = render_to_string("app/subscription_email.html", {'unsubscribe_link': unsubscribe_url})
-#                     text_content = strip_tags(html_content)
-
-#                     # Send email
-#                     email_message = EmailMultiAlternatives(
-#                         subject="Subscription Confirmation",
-#                         body=text_content,
-#                         from_email=settings.EMAIL_HOST_USER,
-#                         to=[email]
-#                     )
-#                     email_message.attach_alternative(html_content, "text/html")
-#                     email_message.send()
-
-#             return redirect('index')  # Redirect to prevent resubmission
-#     else:
-#         form = SubscriptionForm()
-
-#     return render(request, 'index.html', {'form': form})
-
-
-
 def subscribe_newsletter(request):
     if request.method == "POST":
         form = SubscriptionForm(request.POST)

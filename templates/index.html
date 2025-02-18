@@ -70,7 +70,7 @@
                             {%endfor%}
                         </div>
                         
-                        {%include 'includes/alerts.html'%}
+                        {% comment %} {%include 'includes/alerts.html'%} {% endcomment %}
 
 
 
@@ -295,9 +295,43 @@
                         Python, Django, JavaScript or heneral web solutions, I'm here to help. Drop a message, and I'll get back to you as soon as possible. </p>
                     <br>
                     
+                    <div id="compose-message"></div>
+
+                        <form method="POST" action="{% url 'email_compose' %}" id="composeForm">
+                            {% csrf_token %}
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="text" name="sender_name" class="form-control border-0 bg-secondary" placeholder="Your Name">
+                                        <label for="name">Your Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating">
+                                        <input type="email" name="sender_email" class="form-control border-0 bg-secondary" placeholder="Your Email">
+                                        <label for="email">Your Email</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <input type="text" class="form-control border-0 bg-secondary" name="subject" placeholder="Subject">
+                                        <label for="subject">Subject</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-floating">
+                                        <textarea class="form-control border-0 bg-secondary" name="message" placeholder="Leave a message here" style="height: 200px"></textarea>
+                                        <label for="message">Message</label>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
+                                </div>
+                            </div>
+                        </form>
                     
 
-                    <form method="POST" action="{% url 'email_compose' %}" class="composeForm">
+                    {% comment %} <form method="POST" action="{% url 'email_compose' %}" class="composeForm">
                         {% csrf_token %}
                         <div class="row g-3">
                             <div class="col-md-6">
@@ -328,7 +362,7 @@
                                 <button class="btn btn-primary w-100 py-3" type="submit">Send Message</button>
                             </div>
                         </div>
-                    </form>
+                    </form> {% endcomment %}
                 </section>
                 <!-- Contact End -->
 
@@ -342,14 +376,6 @@
 
                             <div class="position-relative w-100">
     
-                                
-                                
-                                {% comment %} <form method="POST" action="{% url 'subscribe_newsletter' %}">
-                                    {% csrf_token %}
-                                    <input class="form-control bg-dark border-0 w-100 py-3 ps-4 pe-5" name="email" type="email" placeholder="Your email" required>
-                                    <button type="submit" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Subscribe</button>
-                                </form> {% endcomment %}
-                                
 
                                 <form id="subscribe-form" method="POST" action="{% url 'subscribe_newsletter' %}">
                                     {% csrf_token %}
@@ -435,7 +461,45 @@
                         });
                     });
                 </script>
-                
+            
+
+
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("#composeForm").submit(function(event){
+            event.preventDefault(); // Prevent default form submission
+
+            var formData = $(this).serialize(); // Serialize form data
+
+            $.ajax({
+                type: "POST",
+                url: "{% url 'email_compose' %}",
+                data: formData,
+                success: function(response) {
+                    $("#compose-message").html('<div class="alert alert-success">Message sent successfully!</div>');
+
+                    // Auto-hide the message after 10 seconds
+                    setTimeout(function(){
+                        $("#compose-message").fadeOut("slow");
+                    }, 10000);
+
+                    // Clear form fields after submission
+                    $("#composeForm")[0].reset();
+                },
+                error: function(xhr) {
+                    $("#compose-message").html('<div class="alert alert-danger">An error occurred. Please try again.</div>');
+
+                    // Auto-hide the message after 10 seconds
+                    setTimeout(function(){
+                        $("#compose-message").fadeOut("slow");
+                    }, 10000);
+                }
+            });
+        });
+    });
+</script>
+
         
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
