@@ -69,7 +69,7 @@ def email_compose(request):
 
 
 def index(request):
-    file_obj = File.objects.first()  # Get the only available file
+    files = File.objects.first()  # Get the only available file
     client= Client.objects.all()
     form = SubscriptionForm()
     profile = Profile.objects.first() 
@@ -81,6 +81,14 @@ def index(request):
     service = Service.objects.all()
     link = SocialLinks.objects.all()
     section = request.GET.get('section', 'ALL')
+    
+     # Generate signed Cloudinary URLs for each file
+    for file_obj in files:
+        file_obj.signed_url, _ = cloudinary.utils.cloudinary_url(
+            file_obj.file.name, secure=True, sign_url=True
+        )
+    
+    
     if section == 'ALL' or not section:
         contents = Content.objects.all()
     else:
@@ -99,7 +107,7 @@ def index(request):
             return redirect('index')  # Redirect to clear the form
     context ={
         'form': form,
-        'file': file_obj,
+        'files': file_obj,
         'clients': client,
         'profiles': profile,
         'experiences': experience,
@@ -114,24 +122,22 @@ def index(request):
     return render(request, 'index.html', context)
 
 
+
 def download_file(request, file_id):
-    # Retrieve file instance
-    file_instance = get_object_or_404(File, id=file_id)
+    try:
+        file_obj = get_object_or_404(File, id=file_id)
 
-    # Get Cloudinary file URL
-    file_url = file_instance.file.url
+        # Cloudinary URL
+        file_url = file_obj.file.url  # This should return the Cloudinary URL
+        print(file_obj.file.url)
 
-    # Fetch the file from Cloudinary
-    response = requests.get(file_url, stream=True)
+        # Redirect to the Cloudinary URL for the file
+        return HttpResponseRedirect(file_url)
 
-    if response.status_code == 200:
-        # Create HTTP response to force download
-        download_response = HttpResponse(response.raw, content_type='application/pdf')
-        download_response['Content-Disposition'] = f'attachment; filename="{file_instance.name}.pdf"'
+    except File.DoesNotExist:
+        raise Http404("File not found")
 
-        return download_response
-    else:
-        return HttpResponse("File not found", status=404)
+
 
 
 def subscribe_newsletter(request):
@@ -157,7 +163,7 @@ def subscribe_newsletter(request):
                     )
 
                     # Render email template
-                    html_content = render_to_string("app/subscription_email.html", {'unsubscribe_link': unsubscribe_url})
+                    html_content = render_to_string("myapp/subscription_email.html", {'unsubscribe_link': unsubscribe_url})
                     text_content = strip_tags(html_content)
 
                     # Send email
@@ -170,7 +176,7 @@ def subscribe_newsletter(request):
                     email_message.attach_alternative(html_content, "text/html")
                     email_message.send()
 
-            return redirect('/')  # Redirect to prevent resubmission
+            return redirect('index')  # Redirect to prevent resubmission
     else:
         form = SubscriptionForm()
 
@@ -195,7 +201,7 @@ def unsubscribe(request, token):
 
     # Send Unsubscribe Confirmation Email
     subject = "You Have Unsubscribed"
-    html_content = render_to_string("app/unsubscribe_email.html", {"email": email})
+    html_content = render_to_string("myapp/unsubscribe_email.html", {"email": email})
     text_content = strip_tags(html_content)  # Plain text fallback
 
     email_message = EmailMultiAlternatives(
@@ -208,11 +214,11 @@ def unsubscribe(request, token):
     email_message.send()
 
     messages.success(request, "You have successfully unsubscribed. A confirmation email has been sent.")
-    return redirect('/')
+    return redirect('index')
 
 def favicon_view(request):
     """Manually serve favicon.ico"""
-    favicon_path = os.path.join(settings.BASE_DIR, 'static/img/favicon.ico')
+    favicon_path = os.path.join(settings.BASE_DIR, 'static/logo/favicon.ico')
     if os.path.exists(favicon_path):
         return FileResponse(open(favicon_path, "rb"), content_type = "image/x-icon")
     return HttpResponse(status=404)
