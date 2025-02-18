@@ -9,10 +9,10 @@ class File(models.Model):
     file = models.FileField(upload_to='uploads/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
 
-    def save(self, *args, **kwargs):
-        if File.objects.exists() and not self.pk:
-            raise ValueError("Only one file entry is allowed. Edit the existing one.")
-        super().save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     if File.objects.exists() and not self.pk:
+    #         raise ValueError("Only one file entry is allowed. Edit the existing one.")
+    #     super().save(*args, **kwargs)
 
     def __str__(self):
         return self.name
