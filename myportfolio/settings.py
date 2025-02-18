@@ -154,8 +154,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
-    # 'myportfolio/static'
-    # Ensure you have a 'static' folder inside your project root
 ]
 
 MEDIA_URL = '/media/'
