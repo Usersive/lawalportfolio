@@ -114,22 +114,24 @@ def index(request):
     return render(request, 'index.html', context)
 
 
-def download_file(request, file_id):
-    # Retrieve the file instance
+def download_pdf(request, file_id):
+    # Retrieve file instance
     file_instance = get_object_or_404(File, id=file_id)
 
-    # Get Cloudinary URL
+    # Get Cloudinary file URL
     file_url = file_instance.file.url
 
     # Fetch the file from Cloudinary
-    response = requests.get(file_url)
-    pdf_content = response.content
+    response = requests.get(file_url, stream=True)
 
-    # Create HTTP response to force file download
-    download_response = HttpResponse(pdf_content, content_type='application/pdf')
-    download_response['Content-Disposition'] = f'attachment; filename="{file_instance.name}.pdf"'
+    if response.status_code == 200:
+        # Create HTTP response to force download
+        download_response = HttpResponse(response.raw, content_type='application/pdf')
+        download_response['Content-Disposition'] = f'attachment; filename="{file_instance.name}.pdf"'
 
-    return download_response
+        return download_response
+    else:
+        return HttpResponse("File not found", status=404)
 
 
 def subscribe_newsletter(request):
