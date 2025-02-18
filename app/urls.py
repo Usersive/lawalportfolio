@@ -1,6 +1,6 @@
 from django.conf import settings
 from django.urls import path
-from .views import file_list, download_file
+from .views import  download_file
 from django.conf.urls.static import static
 
 urlpatterns =[
