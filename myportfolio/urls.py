@@ -16,7 +16,6 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path,include
 
-from app.views import file_list
 from .import views
 from django.conf.urls.static import static
 from django.conf import settings
@@ -41,7 +40,6 @@ urlpatterns = [
     path('favicon.ico', favicon_view, name="favicon"),
     
     
-    # path('', file_list, name='file_list'),
     path('download/<int:file_id>/', download_file, name='download_file'),
     
 ]
