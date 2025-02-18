@@ -188,6 +188,7 @@ CLOUDINARY_STORAGE = {
 # CLOUDINARY SETUP FOR MEDIA
 DEFAULT_FILE_STORAGE ='cloudinary_storage.storage.RawMediaCloudinaryStorage'
 
+
 # #Load barcode user image from cloudinary
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
