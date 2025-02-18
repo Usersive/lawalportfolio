@@ -41,7 +41,7 @@ urlpatterns = [
     path('favicon.ico', favicon_view, name="favicon"),
     
     
-    path('', file_list, name='file_list'),
+    # path('', file_list, name='file_list'),
     path('download/<int:file_id>/', download_file, name='download_file'),
     
 ]

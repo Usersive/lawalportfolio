@@ -72,6 +72,8 @@
                         
                         {%include 'includes/alerts.html'%}
 
+                        <a href="{% url 'download_pdf' file_id=1 %}" target="_blank" download>Download PDF</a>
+
                         <div class="d-flex align-items-end justify-content-between border-top">
                             {% if file %}
                                 <a href="{% url 'download_file' file.id %}"class="btn w-50 border-end">{{file.name}}</a>

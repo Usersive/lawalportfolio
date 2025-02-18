@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.html import strip_tags
 from  app.forms import EmailForm, SubscriptionForm
-from django.http import FileResponse, Http404, HttpResponse, HttpResponseRedirect
+from django.http import FileResponse, Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from app.models import About, Client, Content, Experience, File, Profile, Service, Skill, SocialLinks, Testimonial, UnsubscribedUser, Subscriber, Introduction
 import os
 from django.conf import settings
@@ -112,24 +112,14 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
-def file_list(request):
-    files = File.objects.all()
-    return render(request, 'downloads/file_list.html', {'files': files})
-
 def download_file(request, file_id):
-    try:
-        file_obj = get_object_or_404(File, id=file_id)
+    # Retrieve file object
+    file_instance = get_object_or_404(File, id=file_id)
 
-        # Generate a signed Cloudinary URL (valid for 1 hour)
-        signed_url, _ = cloudinary.utils.cloudinary_url(
-            file_obj.file.name, secure=True, sign_url=True
-        )
+    # Get Cloudinary URL (assuming Cloudinary is handling media files)
+    file_url = file_instance.file.url
 
-        # Redirect user to the signed URL
-        return HttpResponseRedirect(signed_url)
-
-    except File.DoesNotExist:
-        raise Http404("File not found")
+    return JsonResponse({"download_url": file_url})
 
 
 
