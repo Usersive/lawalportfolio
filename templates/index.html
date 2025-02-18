@@ -72,12 +72,12 @@
                         
                         {%include 'includes/alerts.html'%}
 
-                        {% if files %}
+                        {% comment %} {% if files %}
                             <div>
                                 <p>{{ file.name }}</p>
                                 <a href="{{ files.signed_url }}" class="btn btn-primary" download>Download</a>
                             </div>
-                        {% endif %}
+                        {% endif %} {% endcomment %}
 
 
 
