@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import FileResponse, Http404
+from django.http import FileResponse, Http404, HttpResponse
 from .models import File
 import os
 from django.conf import settings
@@ -16,3 +16,13 @@ def download_file(request, file_id):
         return FileResponse(open(file_path, 'rb'), as_attachment=True)
     except File.DoesNotExist:
         raise Http404("File not found")
+
+
+
+# def download_file(request, filename):
+#     file_path = os.path.join(settings. MEDIA_ROOT, filename)
+    
+#     if os.path.exists(file_path):
+#         return FileResponse(open(file_path, 'rb'), as_attachment=True)
+#     else:
+#         return HttpResponse("File not found", status=404)

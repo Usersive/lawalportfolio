@@ -3,7 +3,12 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <met#aeb3b8et="utf-8">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- mobile metas -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+
         <title>{% block title %}MY PORTFOLIO{% endblock %}</title>
         <meta name="description" content="{% block meta_description %}A Python Django Developer Portfolio{% endblock %}">
         <meta name="keywords" content="Python, Django, Web Developer, Portfolio">
@@ -44,7 +49,7 @@
                 <div class="col-lg-4 sticky-lg-top vh-100">
                     <div class="d-flex flex-column h-100 text-center overflow-auto shadow">
                         {%if profiles%}
-                            <img class="w-100 img-fluid mb-4" src="{{profiles.profile_image}}" alt="Image">
+                            <img class="w-100 img-fluid mb-4" src="{{profiles.profile_image.url}}" alt="Image">
 
                             
                                 <h1 class="text-primary mt-2">{{profiles.full_name}}</h1>
