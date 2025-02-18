@@ -169,7 +169,7 @@ def subscribe_newsletter(request):
                     email_message.attach_alternative(html_content, "text/html")
                     email_message.send()
 
-            return redirect('index')  # Redirect to prevent resubmission
+            return redirect('/')  # Redirect to prevent resubmission
     else:
         form = SubscriptionForm()
 
@@ -207,7 +207,7 @@ def unsubscribe(request, token):
     email_message.send()
 
     messages.success(request, "You have successfully unsubscribed. A confirmation email has been sent.")
-    return redirect('index')
+    return redirect('/')
 
 def favicon_view(request):
     """Manually serve favicon.ico"""
