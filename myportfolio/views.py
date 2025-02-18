@@ -69,8 +69,8 @@ def email_compose(request):
 
 
 def index(request):
-    # files = File.objects.first() 
-    files = File.objects.all() # Get the only available file
+    files = File.objects.first() 
+    # files = File.objects.all() # Get the only available file
     client= Client.objects.all()
     form = SubscriptionForm()
     profile = Profile.objects.first() 
@@ -141,48 +141,82 @@ def download_file(request, file_id):
 
 
 
+# def subscribe_newsletter(request):
+#     if request.method == "POST":
+#         form = SubscriptionForm(request.POST)
+#         if form.is_valid():
+#             email = form.cleaned_data['email']
+
+#             # Check if the email is in UnsubscribedUser
+#             if UnsubscribedUser.objects.filter(email=email).exists():
+#                 messages.error(request, "You have previously unsubscribed. Contact support to resubscribe.")
+#             else:
+#                 subscriber, created = Subscriber.objects.get_or_create(email=email)
+
+#                 if not created:
+#                     messages.warning(request, "You're already subscribed!")
+#                 else:
+#                     messages.success(request, "Subscription successful! A confirmation email has been sent.")
+
+#                     # Generate unsubscribe link
+#                     unsubscribe_url = request.build_absolute_uri(
+#                         reverse('unsubscribe', args=[subscriber.unsubscribe_token])
+#                     )
+
+#                     # Render email template
+#                     html_content = render_to_string("app/subscription_email.html", {'unsubscribe_link': unsubscribe_url})
+#                     text_content = strip_tags(html_content)
+
+#                     # Send email
+#                     email_message = EmailMultiAlternatives(
+#                         subject="Subscription Confirmation",
+#                         body=text_content,
+#                         from_email=settings.EMAIL_HOST_USER,
+#                         to=[email]
+#                     )
+#                     email_message.attach_alternative(html_content, "text/html")
+#                     email_message.send()
+
+#             return redirect('index')  # Redirect to prevent resubmission
+#     else:
+#         form = SubscriptionForm()
+
+#     return render(request, 'index.html', {'form': form})
+
+
+
 def subscribe_newsletter(request):
     if request.method == "POST":
         form = SubscriptionForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
 
-            # Check if the email is in UnsubscribedUser
+            # Check if email exists in UnsubscribedUser
             if UnsubscribedUser.objects.filter(email=email).exists():
-                messages.error(request, "You have previously unsubscribed. Contact support to resubscribe.")
+                return JsonResponse({"message": "You have previously unsubscribed. Contact support to resubscribe."}, status=400)
+
+            subscriber, created = Subscriber.objects.get_or_create(email=email)
+
+            if not created:
+                return JsonResponse({"message": "You're already subscribed!"}, status=400)
             else:
-                subscriber, created = Subscriber.objects.get_or_create(email=email)
+                # Send confirmation email
+                unsubscribe_url = request.build_absolute_uri(reverse('unsubscribe', args=[subscriber.unsubscribe_token]))
+                html_content = render_to_string("app/subscription_email.html", {'unsubscribe_link': unsubscribe_url})
+                text_content = strip_tags(html_content)
 
-                if not created:
-                    messages.warning(request, "You're already subscribed!")
-                else:
-                    messages.success(request, "Subscription successful! A confirmation email has been sent.")
+                email_message = EmailMultiAlternatives(
+                    subject="Subscription Confirmation",
+                    body=text_content,
+                    from_email=settings.EMAIL_HOST_USER,
+                    to=[email]
+                )
+                email_message.attach_alternative(html_content, "text/html")
+                email_message.send()
 
-                    # Generate unsubscribe link
-                    unsubscribe_url = request.build_absolute_uri(
-                        reverse('unsubscribe', args=[subscriber.unsubscribe_token])
-                    )
+                return JsonResponse({"message": "Subscription successful! A confirmation email has been sent."})
 
-                    # Render email template
-                    html_content = render_to_string("myapp/subscription_email.html", {'unsubscribe_link': unsubscribe_url})
-                    text_content = strip_tags(html_content)
-
-                    # Send email
-                    email_message = EmailMultiAlternatives(
-                        subject="Subscription Confirmation",
-                        body=text_content,
-                        from_email=settings.EMAIL_HOST_USER,
-                        to=[email]
-                    )
-                    email_message.attach_alternative(html_content, "text/html")
-                    email_message.send()
-
-            return redirect('index')  # Redirect to prevent resubmission
-    else:
-        form = SubscriptionForm()
-
-    return render(request, 'index.html', {'form': form})
-
+    return JsonResponse({"message": "Invalid request."}, status=400)
 
 
 def unsubscribe(request, token):
@@ -202,7 +236,7 @@ def unsubscribe(request, token):
 
     # Send Unsubscribe Confirmation Email
     subject = "You Have Unsubscribed"
-    html_content = render_to_string("myapp/unsubscribe_email.html", {"email": email})
+    html_content = render_to_string("app/unsubscribe_email.html", {"email": email})
     text_content = strip_tags(html_content)  # Plain text fallback
 
     email_message = EmailMultiAlternatives(

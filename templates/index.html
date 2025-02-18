@@ -72,13 +72,6 @@
                         
                         {%include 'includes/alerts.html'%}
 
-                        {% comment %} {% if files %}
-                            <div>
-                                <p>{{ file.name }}</p>
-                                <a href="{{ files.signed_url }}" class="btn btn-primary" download>Download</a>
-                            </div>
-                        {% endif %} {% endcomment %}
-
 
 
 
@@ -343,15 +336,31 @@
                         <div class="bg-secondary text-center p-5">
                             <h1 class="text-white font-weight-bold">Never Miss an Update!</h1>
                             <p class="text-white">Stay ahead with the latest trends in web development</p>
+
+                            <!-- Success/Error Message Container -->
+                            <div id="subscribe-message"></div>
+                            
                             <div class="position-relative w-100">
     
                                 
                                 
-                                <form method="POST" action="{% url 'subscribe_newsletter' %}">
+                                {% comment %} <form method="POST" action="{% url 'subscribe_newsletter' %}">
                                     {% csrf_token %}
                                     <input class="form-control bg-dark border-0 w-100 py-3 ps-4 pe-5" name="email" type="email" placeholder="Your email" required>
                                     <button type="submit" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Subscribe</button>
+                                </form> {% endcomment %}
+                                
+
+                                <form id="subscribe-form" method="POST" action="{% url 'subscribe_newsletter' %}">
+                                    {% csrf_token %}
+                                    <input class="form-control bg-dark border-0 w-100 py-3 ps-4 pe-5" 
+                                           name="email" type="email" placeholder="Your email" required>
+                                    <button type="submit" class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">
+                                        Subscribe
+                                    </button>
                                 </form>
+
+
     
                             </div>
                         </div>
@@ -386,8 +395,36 @@
         
 
 
-<a href="https://api.whatsapp.com/send/?phone=+2348163273460&text=I%27m+interested+in+your+work" 
-class="whatsapp"><i class="faa fa fa-whatsapp"></i></a>
+        <a href="https://api.whatsapp.com/send/?phone=+2348163273460&text=I%27m+interested+in+your+work" 
+        class="whatsapp"><i class="faa fa fa-whatsapp"></i></a>
+
+
+              
+
+                <!-- Include jQuery (if not already included) -->
+                <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+                <script>
+                    $(document).ready(function(){
+                        $("#subscribe-form").submit(function(event){
+                            event.preventDefault();  // Prevent page reload
+
+                            var formData = $(this).serialize(); // Serialize form data
+
+                            $.ajax({
+                                type: "POST",
+                                url: "{% url 'subscribe_newsletter' %}",
+                                data: formData,
+                                success: function(response) {
+                                    $("#subscribe-message").html('<div class="alert alert-success">' + response.message + '</div>');
+                                },
+                                error: function(xhr) {
+                                    $("#subscribe-message").html('<div class="alert alert-danger">An error occurred. Try again.</div>');
+                                }
+                            });
+                        });
+                    });
+                </script>
 
         
         <!-- JavaScript Libraries -->
