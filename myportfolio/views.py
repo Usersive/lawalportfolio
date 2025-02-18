@@ -69,7 +69,8 @@ def email_compose(request):
 
 
 def index(request):
-    files = File.objects.first()  # Get the only available file
+    # files = File.objects.first() 
+    files = File.objects.all() # Get the only available file
     client= Client.objects.all()
     form = SubscriptionForm()
     profile = Profile.objects.first() 
