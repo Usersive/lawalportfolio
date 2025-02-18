@@ -57,7 +57,7 @@ INSTALLED_APPS = [
     'cloudinary',
     'admin_honeypot',
     
-    'sslserver',
+    
 ]
 
 MIDDLEWARE = [
