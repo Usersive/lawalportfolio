@@ -39,8 +39,8 @@ SECRET_KEY =('SECRET_KEY')
 # DEBUG = True
 DEBUG = os.environ.get('DEBUG', 'True')=="True"
 
-
-ALLOWED_HOSTS = ['127.0.0.1', 'lawalportfolio.onrender.com']
+ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = ['127.0.0.1', 'lawalportfolio.onrender.com']
 
 # Application definition
 
@@ -56,6 +56,8 @@ INSTALLED_APPS = [
     'cloudinary_storage',
     'cloudinary',
     'admin_honeypot',
+    
+    'sslserver',
 ]
 
 MIDDLEWARE = [

@@ -24,10 +24,12 @@ def download_file(request, file_id):
 
         # Cloudinary URL
         file_url = file_obj.file.url  # This should return the Cloudinary URL
+        print(file_obj.file.url)
 
         # Redirect to the Cloudinary URL for the file
         return HttpResponseRedirect(file_url)
 
     except File.DoesNotExist:
         raise Http404("File not found")
+
 
