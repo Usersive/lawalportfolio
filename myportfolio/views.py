@@ -7,6 +7,7 @@ from django.contrib import messages
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.html import strip_tags
+import requests
 from  app.forms import EmailForm, SubscriptionForm
 from django.http import FileResponse, Http404, HttpResponse, HttpResponseRedirect, JsonResponse
 from app.models import About, Client, Content, Experience, File, Profile, Service, Skill, SocialLinks, Testimonial, UnsubscribedUser, Subscriber, Introduction
@@ -112,15 +113,23 @@ def index(request):
     }
     return render(request, 'index.html', context)
 
+
 def download_file(request, file_id):
-    # Retrieve file object
+    # Retrieve the file instance
     file_instance = get_object_or_404(File, id=file_id)
 
-    # Get Cloudinary URL (assuming Cloudinary is handling media files)
+    # Get Cloudinary URL
     file_url = file_instance.file.url
 
-    return JsonResponse({"download_url": file_url})
+    # Fetch the file from Cloudinary
+    response = requests.get(file_url)
+    pdf_content = response.content
 
+    # Create HTTP response to force file download
+    download_response = HttpResponse(pdf_content, content_type='application/pdf')
+    download_response['Content-Disposition'] = f'attachment; filename="{file_instance.name}.pdf"'
+
+    return download_response
 
 
 def subscribe_newsletter(request):
