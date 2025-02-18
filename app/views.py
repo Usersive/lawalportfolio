@@ -4,9 +4,9 @@ from .models import File
 import os
 from django.conf import settings
 
-# def file_list(request):
-#     files = File.objects.all()
-#     return render(request, 'downloads/file_list.html', {'files': files})
+def file_list(request):
+    files = File.objects.all()
+    return render(request, 'downloads/file_list.html', {'files': files})
 
 # def download_file(request, file_id):
 #     try:
