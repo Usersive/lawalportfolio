@@ -339,7 +339,7 @@
 
                             <!-- Success/Error Message Container -->
                             <div id="subscribe-message"></div>
-                            
+
                             <div class="position-relative w-100">
     
                                 
@@ -408,24 +408,34 @@
                     $(document).ready(function(){
                         $("#subscribe-form").submit(function(event){
                             event.preventDefault();  // Prevent page reload
-
+                
                             var formData = $(this).serialize(); // Serialize form data
-
+                
                             $.ajax({
                                 type: "POST",
                                 url: "{% url 'subscribe_newsletter' %}",
                                 data: formData,
                                 success: function(response) {
                                     $("#subscribe-message").html('<div class="alert alert-success">' + response.message + '</div>');
+                
+                                    // Auto-hide the message after 10 seconds (10000ms)
+                                    setTimeout(function(){
+                                        $("#subscribe-message").fadeOut("slow");
+                                    }, 10000);
                                 },
                                 error: function(xhr) {
-                                    $("#subscribe-message").html('<div class="alert alert-danger">An error occurred. Try again.</div>');
+                                    $("#subscribe-message").html('<div class="alert alert-danger">You are already subscribed!.</div>');
+                
+                                    // Auto-hide the message after 10 seconds (10000ms)
+                                    setTimeout(function(){
+                                        $("#subscribe-message").fadeOut("slow");
+                                    }, 10000);
                                 }
                             });
                         });
                     });
                 </script>
-
+                
         
         <!-- JavaScript Libraries -->
         <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
