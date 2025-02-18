@@ -72,12 +72,15 @@
                         
                         {%include 'includes/alerts.html'%}
 
-                        {% for file in files %}
+                        {% if files %}
                             <div>
                                 <p>{{ file.name }}</p>
-                                <a href="{{ file.signed_url }}" class="btn btn-primary" download>Download</a>
+                                <a href="{{ files.signed_url }}" class="btn btn-primary" download>Download</a>
                             </div>
-                        {% endfor %}
+                        {% endif %}
+
+
+
 
                         <div class="d-flex align-items-end justify-content-between border-top">
                             {% if files %}
