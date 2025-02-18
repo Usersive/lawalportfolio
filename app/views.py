@@ -3,10 +3,25 @@ from django.http import FileResponse, Http404, HttpResponse, HttpResponseRedirec
 from .models import File
 import os
 from django.conf import settings
-
+import cloudinary.utils
 def file_list(request):
     files = File.objects.all()
     return render(request, 'downloads/file_list.html', {'files': files})
+
+def download_file(request, file_id):
+    try:
+        file_obj = get_object_or_404(File, id=file_id)
+
+        # Generate a signed Cloudinary URL (valid for 1 hour)
+        signed_url, _ = cloudinary.utils.cloudinary_url(
+            file_obj.file.name, secure=True, sign_url=True
+        )
+
+        # Redirect user to the signed URL
+        return HttpResponseRedirect(signed_url)
+
+    except File.DoesNotExist:
+        raise Http404("File not found")
 
 # def download_file(request, file_id):
 #     try:
@@ -16,20 +31,3 @@ def file_list(request):
 #         return FileResponse(open(file_path, 'rb'), as_attachment=True)
 #     except File.DoesNotExist:
 #         raise Http404("File not found")
-
-
-def download_file(request, file_id):
-    try:
-        file_obj = get_object_or_404(File, id=file_id)
-
-        # Cloudinary URL
-        file_url = file_obj.file.url  # This should return the Cloudinary URL
-        print(file_obj.file.url)
-
-        # Redirect to the Cloudinary URL for the file
-        return HttpResponseRedirect(file_url)
-
-    except File.DoesNotExist:
-        raise Http404("File not found")
-
-

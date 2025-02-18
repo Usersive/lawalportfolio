@@ -15,6 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+
+from app.views import file_list
 from .import views
 from django.conf.urls.static import static
 from django.conf import settings
@@ -33,10 +35,14 @@ urlpatterns = [
     
     path("robots.txt", TemplateView.as_view(template_name="robots.txt", content_type="text/plain")),
     path('download/', download_file, name='download_file'),  
-    path('subscribe/', subscribe_newsletter, name='subscribe_newsletter'),
+    path('subscribe_newsletter/', subscribe_newsletter, name='subscribe_newsletter'),
     path("unsubscribe/<uuid:token>/", unsubscribe, name="unsubscribe"),
     
     path('favicon.ico', favicon_view, name="favicon"),
+    
+    
+    path('', file_list, name='file_list'),
+    path('download/<int:file_id>/', download_file, name='download_file'),
     
 ]
 if settings.DEBUG:
