@@ -37,8 +37,7 @@ SECRET_KEY =('SECRET_KEY')
 DEBUG = os.environ.get('DEBUG', 'True')=="True"
 
 
-ALLOWED_HOSTS = ['lawalportfolio.onrender.com']
-
+ALLOWED_HOSTS = ['127.0.0.1', 'lawalportfolio.onrender.com']
 
 # Application definition
 
@@ -159,8 +158,8 @@ STATICFILES_DIRS = [
     # Ensure you have a 'static' folder inside your project root
 ]
 
-# MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 
