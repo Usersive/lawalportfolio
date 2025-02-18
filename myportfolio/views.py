@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils.html import strip_tags
 from  app.forms import EmailForm, SubscriptionForm
-from django.http import FileResponse, Http404, HttpResponse
+from django.http import FileResponse, Http404, HttpResponse, HttpResponseRedirect
 from app.models import About, Client, Content, Experience, File, Profile, Service, Skill, SocialLinks, Testimonial, UnsubscribedUser, Subscriber, Introduction
 import os
 from django.conf import settings
